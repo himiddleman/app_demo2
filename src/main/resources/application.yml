@@ -1,0 +1,95 @@
+#tomcat端口号 根路径配置
+server:
+  port: 8020
+  session:
+    cookie:
+      name: APP2_SESSIONID
+
+spring:
+  thymeleaf:
+    mode: HTML
+    encoding: UTF-8
+    content-type: text/html
+    #开发模式关闭缓存，看到实时页面
+    cache: false
+  #使用redis
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    timeout: 0
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+
+  #rabbitmq
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    #开启发送确认
+    publisher-confirms: true
+    #开启发送失败退回
+    publisher-returns: true
+    listener:
+      simple:
+        #手动应答,开启ack
+        acknowledge-mode: manual
+        #是否支持重试
+        retry:
+          enabled: true
+  #数据源配置
+  datasource:
+    url: jdbc:mysql://47.99.172.60:3306/ssm
+    username: root
+    password: 123456
+    driverClassName: com.mysql.jdbc.Driver
+    #连接池的配置信息
+    initialSize: 5
+    minIdle: 5
+    maxActive: 200
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    multiStatementAllow: true
+    #配置该过滤器StatFilter druid后台才能看到SQL监控记录,为支持oracle批量出入，暂时去除wall过滤器
+    filters: stat,slf4j,config
+    #connectionProperties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAL4bOnHeX9yIZv0t3i+WPsMszD01jpEEsHbdLY2Sy9akFSe0ShkLwelz/s/EP2mVpLe3V3stSG0/lecXDRA1RGUCAwEAAQ==
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: com.allinpay.entity
+
+# 分页配置
+pagehelper:
+  helperDialect: oracle
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+# druid控制台相关参数设置
+druid:
+  config:
+    username: root
+    password: root
+    allow: 127.0.0.1
+    deny: 192.168.1.103
+    resetEnable: false
+    logSlowSql: true
+
+#配置日志文件路径
+logging:
+  classpath: log4j2.xml
+  level:
+    #控制单个包下日志输出级别
+    org.thymeleaf: info
+
